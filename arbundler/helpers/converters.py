@@ -24,4 +24,4 @@ def winston_to_ar(winston_str: str) -> float:
 
 
 def ar_to_winston(ar_amount: str | int | float | Decimal) -> str:
-    return str(int(Decimal(ar_amount) * 10 ** 12))
+    return str(int(Decimal(ar_amount) * 10**12))
