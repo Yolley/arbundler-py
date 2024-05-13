@@ -13,7 +13,7 @@ class ApiObject(Struct, kw_only=True, rename="camel"):
 class UploadResponse(ApiObject):
     id: str
     owner: str
-    winc: str
+    winc: int
     timestamp: int
 
     data_caches: list[str]
