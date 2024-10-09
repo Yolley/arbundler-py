@@ -2,10 +2,9 @@ import json
 import logging
 from enum import IntEnum, auto
 
-from Crypto.Hash import SHA256
-from Crypto.PublicKey import RSA
-from Crypto.Signature import PKCS1_PSS
-from jose import jwk
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import padding
+from jwt import PyJWK
 
 from arbundler.helpers.converters import owner_to_address
 from arbundler.helpers.hashing import base64url_decode
@@ -29,8 +28,7 @@ class ArweaveSigner:
 
     def __init__(self, jwk_data: dict) -> None:
         self.jwk_data = jwk_data
-        self.jwk = jwk.construct(self.jwk_data, algorithm=jwk.ALGORITHMS.RS256)
-        self.rsa = RSA.importKey(self.jwk.to_pem())
+        self.jwk = PyJWK(self.jwk_data, algorithm="RS256")
 
         self.public_key = base64url_decode(self.owner)
         self.address = owner_to_address(self.owner)
@@ -44,7 +42,9 @@ class ArweaveSigner:
         with open(jwk_file_path) as r:
             return cls(json.load(r))
 
-    def sign(self, message):
-        h = SHA256.new(message)
-        signed_data = PKCS1_PSS.new(self.rsa).sign(h)
-        return signed_data
+    def sign(self, message: bytes):
+        return self.jwk.key.sign(
+            message,
+            padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH),
+            hashes.SHA256(),
+        )
