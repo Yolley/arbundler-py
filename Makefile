@@ -4,17 +4,18 @@ clean:
 
 .PHONE: lint
 lint:
-	ruff format arbundler
-	ruff check arbundler --fix
+	uv run ruff format arbundler
+	uv run ruff check arbundler --fix
+	uv run ty check
 
 .PHONE: publish
 publish:
 	make clean
-	poetry build
-	poetry publish
+	uv build
+	uv publish
 
 .PHONE: test-publish
 test-publish:
 	make clean
-	poetry build
-	poetry publish -r testpypi
+	uv build
+	uv publish -r testpypi

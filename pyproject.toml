@@ -1,24 +1,26 @@
 [project]
 name = "arbundler"
-version = "0.3.0"
+version = "0.4.0"
 description = ""
 authors = [{ name = "Yolley", email = "Yolley@users.noreply.github.com" }]
 requires-python = ">=3.11,<3.14"
 readme = "README.md"
 dependencies = [
-    "anyio<5,>=4",
-    "cryptography<46,>=43.0.3",
+    "anyio>=4",
+    "cryptography>=43.0.3",
+    "furl>=2.1.4",
     "httpx<1,>=0",
-    "msgspec<1.0.0,>=0.18.4",
-    "pyjwt[crypto]>=2.9.0,<3",
+    "msgspec<1,>=0.18.4",
+    "pyjwt[crypto]>=2.9.0",
 ]
 
 [dependency-groups]
 dev = [
-    "deptry<1,>=0",
-    "ipython<10,>=9",
-    "mypy<2,>=1",
-    "ruff<1,>=0",
+    "deptry>=0",
+    "ipython>=9",
+    "mypy>=1",
+    "ruff>=0",
+    "ty>=0.0.29",
 ]
 
 [tool.hatch.build.targets.sdist]

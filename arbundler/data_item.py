@@ -1,4 +1,5 @@
 import hashlib
+from typing import Any
 
 from arbundler.helpers.deep_hash import deep_hash
 from arbundler.helpers.hashing import base64url_decode, base64url_encode
@@ -62,6 +63,8 @@ class DataItem:
         self._raw_id = hashlib.sha256(raw_signature).digest()
 
     def to_binary(self) -> bytes:
+        if not self._raw_signature:
+            raise ValueError("DataItem is not signed!")
         owner = self.signer.public_key
         owner_length = len(owner)
 
@@ -121,7 +124,7 @@ class DataItem:
 
         return bytes(bytes_arr)
 
-    def to_dict(self) -> dict[str, str]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "signature": self.signature,
             "owner": self.signer.owner,

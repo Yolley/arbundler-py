@@ -7,7 +7,7 @@ def base64url_decode(inp: str | bytes) -> bytes:
 
     if rem > 0:
         char = "=" if isinstance(inp, str) else b"="
-        inp += char * (4 - rem)
+        inp += char * (4 - rem)  # ty: ignore[unsupported-operator]
 
     return base64.urlsafe_b64decode(inp)
 
